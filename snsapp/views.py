@@ -68,6 +68,5 @@ def new_freecomment(request, post_id):
     if filled_form.is_valid():
         finished_form = filled_form.save(commit=False)
         finished_form.post = get_object_or_404(FreePost, pk=post_id)
-        finished_form.author = request.user
         finished_form.save()
     return redirect('freedetail', post_id)
