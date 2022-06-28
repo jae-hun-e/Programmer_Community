@@ -1,11 +1,15 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from .forms import PostForm, CommentForm, FreePostForm, FreeCommentForm
 from .forms import Post, FreePost
+from django.core.paginator import Paginator
 
 
 def home(req):
     # posts = Post.objects.all()
     posts = Post.objects.filter().order_by('-date')
+    paginator = Paginator(posts, 5)  # 몇개씩 보여 줄 것인지
+    pagnum = req.GET.get('page')
+    posts = paginator.get_page(pagnum)
     return render(req, 'index.html', {'posts': posts})
 
 
@@ -68,5 +72,6 @@ def new_freecomment(request, post_id):
     if filled_form.is_valid():
         finished_form = filled_form.save(commit=False)
         finished_form.post = get_object_or_404(FreePost, pk=post_id)
+        finished_form.author = request.user
         finished_form.save()
     return redirect('freedetail', post_id)
