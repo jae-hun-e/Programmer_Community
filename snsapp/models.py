@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
 
+
 # 게시물 모델
 class Post(models.Model):
     title = models.CharField(max_length=200)
@@ -23,7 +24,7 @@ class Comment(models.Model):
 
 
 class FreePost(models.Model):
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, default='')
     body = models.TextField()
     date = models.DateTimeField(auto_now_add=True)  # 생성 당시의 시간을 넣어줌
     author = models.ForeignKey(User, on_delete=models.CASCADE)
